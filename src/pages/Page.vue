@@ -26,10 +26,10 @@
 import Vue from 'vue';
 import AuthStorage from '../storages/Auth';
 
-import { computed, ref, onMounted } from '@vue/composition-api';
+import { computed } from '@vue/composition-api';
 
 export default Vue.extend({
-  setup (props, { root }) {
+  setup () {
     const token = computed(() => AuthStorage.getToken());
     return {
       token,
