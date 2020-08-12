@@ -1,11 +1,21 @@
 import { route } from 'quasar/wrappers'
 import VueRouter, { Route } from 'vue-router'
 import routes from './routes'
-import GuardWrapper, { IMiddlewareContext } from './guards/GuardWrapper';
+import GuardWrapper, { IMiddlewareContext } from './guards/guard_wrapper';
 
+export interface Breadcrumb {
+  name: string;
+  to?: {
+    path?: string,
+    name?: string,
+    _params?: string[],
+    params?: {[paramKey: string]: string}
+  }
+}
 export interface AppRoute extends Route {
   meta?: {
     guards?: GuardWrapper[];
+    breadcrumbs?: Breadcrumb[];
   }
 }
 
@@ -13,6 +23,8 @@ export interface AppRoute extends Route {
  * If not building with SSR mode, you can
  * directly export the Router instantiation
  */
+
+let routerInstance: VueRouter;
 
 export default route(function ({ Vue }) {
   Vue.use(VueRouter)
@@ -29,23 +41,36 @@ export default route(function ({ Vue }) {
   })
 
   Router.beforeEach(async (to: AppRoute, from: AppRoute, next: () => void) => {
-    if (!to.meta || !to.meta.guards) {
+    const allGuards = [];
+    for (const math of to.matched) {
+      if (!math.meta || !math.meta.guards) {
+        continue;
+      }
+      for (const gurad of math.meta.guards) {
+        allGuards.push(gurad);
+      }
+    }
+
+    if (allGuards.length === 0) {
       return next();
     }
-    const guards = to.meta.guards;
     const context = {
       to,
       from,
       next
     };
-    return guards[0].middleware({
+    return allGuards[0].middleware({
       ...context,
-      next: guardsPipeline(context, guards, 1)
+      next: guardsPipeline(context, allGuards, 1)
     });
   });
 
-  return Router
+  routerInstance = Router;
+
+  return Router;
 });
+
+export { routerInstance };
 
 function guardsPipeline (
   context: IMiddlewareContext,

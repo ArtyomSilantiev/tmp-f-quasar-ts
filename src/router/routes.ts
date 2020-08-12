@@ -1,30 +1,65 @@
-import { RouteConfig } from 'vue-router'
-import IsAuthGuard from './guards/IsAuth';
+import { RouteConfig } from 'vue-router';
+import IsAdminGuard from './guards/is_admin';
+import IsNotAdminGuard from './guards/is_not_admin';
 
-function layout (name: string) {
-  return import('layouts/' + name);
-}
+import MainLayout from '@/layouts/MainLayout.vue';
+import BlankLayout from '@/layouts/BlankLayout.vue';
 
-function page (name: string) {
-  return import('pages/' + name);
-}
+import BasePage from '@/pages/BasePage.vue';
+import UserPage from '@/pages/UserPage.vue';
+import AuthLogout from '@/pages/Logout.vue';
+import AuthLogin from '@/pages/Login.vue';
+import Error404 from '@/pages/Error404.vue';
 
 const routes: RouteConfig[] = [
   {
     path: '/',
-    component: () => layout('MainLayout.vue'),
+    component: MainLayout,
     children: [
-      { path: '', component: () => page('Index.vue') },
-      { path: 'test', component: () => page('Page.vue'), meta: { name: 'test' } },
-      { path: 'guarded', component: () => page('Page.vue'), meta: { name: 'guarded', guards: [IsAuthGuard] } }
-    ]
+      {
+        path: '',
+        component: BasePage,
+        meta: {
+          breadcrumbs: [
+            'Главная'
+          ]
+        }
+      }, {
+        path: 'user',
+        component: UserPage,
+        meta: {
+          breadcrumbs: [
+            { name: 'Главная', to: { path: '/' } },
+            { name: 'Пользователь' }
+          ]
+        }
+      }, {
+        path: 'logout',
+        component: AuthLogout
+      }
+    ],
+    meta: {
+      guards: [IsAdminGuard]
+    }
+  },
+
+  {
+    path: '/auth',
+    component: BlankLayout,
+    children: [{
+      path: 'login',
+      component: AuthLogin
+    }],
+    meta: {
+      guards: [IsNotAdminGuard]
+    }
   },
 
   // Always leave this as last one,
   // but you can also remove it
   {
     path: '*',
-    component: () => page('Error404.vue')
+    component: Error404
   }
 ]
 
