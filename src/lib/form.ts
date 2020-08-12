@@ -77,7 +77,7 @@ export default abstract class Form <SubmitResType> {
 
     try {
       this.statusText = '';
-      this.errorText = '';
+      this.clearErrors();
       this.busy = true;
       const response = await this.submitAction(config);
       this.busy = false;

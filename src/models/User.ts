@@ -54,21 +54,8 @@ export function getById (userId: number | string): Promise<AxiosResponse<User>> 
   return axios.get('/api/user/byid/' + userId);
 }
 
-export async function getAuthInfo (): Promise<AxiosResponse<UserAuthInfo>> {
-  return {
-    data: {
-      isAuth: true,
-      user: {
-        id: '1',
-        role: UserRole.Admin,
-        email: 'admin@example.com',
-        firstName: 'Admin',
-        lastName: 'Power',
-        createdAt: new Date().toJSON()
-      }
-    }
-  } as AxiosResponse;
-  // return axios.get('/api/user');
+export function getAuthInfo (): Promise<AxiosResponse<UserAuthInfo>> {
+  return axios.get('/api/user');
 }
 
 export function logout (): Promise<AxiosResponse<unknown>> {
@@ -99,21 +86,8 @@ export class FormUserLogin extends Form <Promise<AxiosResponse<{
     email: '',
     password: ''
   };
-  protected async submitAction () {
-    return {
-      data: {
-        token: Date.now().toString(36),
-        user: {
-          id: '1',
-          role: UserRole.Admin,
-          email: 'admin@example.com',
-          firstName: 'Admin',
-          lastName: 'Power',
-          createdAt: new Date().toJSON()
-        }
-      }
-    } as AxiosResponse;
-    // return axios.post('/api/user/login', this.model);
+  protected submitAction () {
+    return axios.post('/api/user/login', this.model);
   }
 }
 

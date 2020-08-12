@@ -6,7 +6,8 @@
   "author": "Artyom Silantiev <artyom.silantiev@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "quasar dev",
+    "dev": "npx quasar dev",
+    "build": "npx quasar build",
     "lint": "eslint --ext .js,.ts,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
   },
