@@ -1,6 +1,31 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="q-pa-md q-gutter-md">
     <std-breadcrumbs-component />
+
+    <q-card>
+      <q-card-section>
+        <q-list>
+          <q-item>
+            ID: {{ user.id }}
+          </q-item>
+          <q-item>
+            Email: {{ user.email }}
+          </q-item>
+          <q-item>
+            Роль: {{ user.role }}
+          </q-item>
+          <q-item>
+            Имя: {{ user.firstName }}
+          </q-item>
+          <q-item>
+            Фамилия: {{ user.firstName }}
+          </q-item>
+          <q-item>
+            Дата регистрации: {{ user.createdAt | date('DD.MM.YYYY HH:mm') }}
+          </q-item>
+        </q-list>
+      </q-card-section>
+    </q-card>
   </q-page>
 </template>
 

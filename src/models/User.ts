@@ -63,7 +63,8 @@ export async function getAuthInfo (): Promise<AxiosResponse<UserAuthInfo>> {
         role: UserRole.Admin,
         email: 'admin@example.com',
         firstName: 'Admin',
-        lastName: 'Power'
+        lastName: 'Power',
+        createdAt: new Date().toJSON()
       }
     }
   } as AxiosResponse;
@@ -107,7 +108,8 @@ export class FormUserLogin extends Form <Promise<AxiosResponse<{
           role: UserRole.Admin,
           email: 'admin@example.com',
           firstName: 'Admin',
-          lastName: 'Power'
+          lastName: 'Power',
+          createdAt: new Date().toJSON()
         }
       }
     } as AxiosResponse;

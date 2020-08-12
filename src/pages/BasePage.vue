@@ -33,7 +33,7 @@ export default defineComponent({
   props: {
     argName: {
       type: String as PropType<string>,
-      default: 'BlankPage',
+      default: 'Base Page!',
       required: false
     }
   },
